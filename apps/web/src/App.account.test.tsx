@@ -527,6 +527,7 @@ describe("password sign-in and claiming", () => {
     await waitFor(() =>
       expect(dialog.getByLabelText("Password")).toHaveFocus(),
     );
+    await user.type(dialog.getByLabelText("Username"), "Alice");
     await user.type(
       dialog.getByLabelText("Password"),
       "A private long password 1",
@@ -566,6 +567,7 @@ describe("password sign-in and claiming", () => {
     const dialog = within(
       await screen.findByRole("dialog", { name: "Claim account" }),
     );
+    await user.type(dialog.getByLabelText("Username"), "Alice");
     await user.type(
       dialog.getByLabelText("Password"),
       "A private long password 1",

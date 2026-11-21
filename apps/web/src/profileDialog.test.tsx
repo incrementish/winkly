@@ -763,8 +763,10 @@ describe("a member's display-name cooldown", () => {
       "true",
     );
     await user.clear(username);
-    await user.type(username, "!");
+    await user.type(username, "alice_new");
     expect(screen.queryByRole("alert")).toBeNull();
+    await user.clear(username);
+    await user.type(username, "!");
     await user.click(screen.getByRole("button", { name: "Save" }));
     expect(save).toHaveBeenCalledTimes(1);
     expect(username).toHaveFocus();

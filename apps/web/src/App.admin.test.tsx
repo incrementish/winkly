@@ -321,7 +321,11 @@ describe("the admin's tools", () => {
     const save = screen.getByRole("button", { name: "Save simulated queue" });
     await user.clear(input);
     await user.type(input, "1001");
-    expect(save).toBeDisabled();
+    await user.click(save);
+    expect(input).toHaveAttribute("aria-invalid", "true");
+    expect(server.latest.emittedEvents("admin:queue:settings")).toEqual([
+      { slug: "admin-lab", enabled: true, ahead: 0 },
+    ]);
     await user.clear(input);
     await user.type(input, "20");
     await user.click(save);
@@ -502,9 +506,9 @@ describe("the crowd", () => {
     for (const invalid of ["0", "1001", "1.5"]) {
       await user.clear(limit);
       await user.type(limit, invalid);
-      expect(
-        screen.getByRole("button", { name: "Save room limit" }),
-      ).toBeDisabled();
+      await user.click(screen.getByRole("button", { name: "Save room limit" }));
+      expect(limit).toHaveAttribute("aria-invalid", "true");
+      expect(server.latest.emittedEvents("admin:room:limit")).toEqual([]);
     }
     await user.clear(limit);
     await user.type(limit, "100{Enter}");
@@ -609,17 +613,17 @@ describe("the crowd", () => {
     expect(screen.queryByRole("menu")).not.toBeInTheDocument();
     await openTools(user);
     told(server, "paused", 5, 5);
-    expect(
-      screen.getByRole("button", { name: "Simulate typing" }),
-    ).toBeDisabled();
     const reopenedRoom = screen.getByRole("spinbutton", {
       name: "Typing to the room",
     });
+    await user.click(screen.getByRole("button", { name: "Simulate typing" }));
+    expect(reopenedRoom).toHaveAttribute("aria-invalid", "true");
+    expect(server.latest.emittedEvents("admin:crowd:typing")).toHaveLength(2);
     await user.clear(reopenedRoom);
     await user.type(reopenedRoom, "-1");
-    expect(
-      screen.getByRole("button", { name: "Simulate typing" }),
-    ).toBeDisabled();
+    await user.click(screen.getByRole("button", { name: "Simulate typing" }));
+    expect(reopenedRoom).toHaveAttribute("aria-invalid", "true");
+    expect(server.latest.emittedEvents("admin:crowd:typing")).toHaveLength(2);
   });
 
   it("previews typing with people added using Fill room without starting a crowd", async () => {
@@ -692,10 +696,9 @@ describe("the crowd", () => {
       await user.clear(amount);
       if (wrong) await user.type(amount, wrong);
 
-      expect(amount).toBeInvalid();
-      expect(
-        screen.getByRole("button", { name: "Start the crowd" }),
-      ).toBeDisabled();
+      await user.click(screen.getByRole("button", { name: "Start the crowd" }));
+      expect(amount).toHaveAttribute("aria-invalid", "true");
+      expect(server.latest.emittedEvents("admin:crowd:start")).toEqual([]);
     }
 
     await user.clear(amount);
