@@ -102,6 +102,7 @@ jobs:
           set -euo pipefail
           cd /opt/chatter
           sed -i "s/^TAG=.*/TAG=$SHA/" deploy/stack.env
+          sed -i 's|^WEB_ORIGIN=.*|WEB_ORIGIN=https://winkly.pages.dev|' deploy/chat-server.env
           docker compose --env-file deploy/stack.env -f docker-compose.prod.yml pull chat-server admin
           docker compose --env-file deploy/stack.env -f docker-compose.prod.yml up -d --remove-orphans
           docker image prune -f
