@@ -122,6 +122,12 @@ jobs:
           grep -q '^IMAGE_PREFIX=' deploy/stack.env
           grep -q '^WEB_ORIGIN=' deploy/chat-server.env
           IMAGE_PREFIX=ghcr.io/incrementish/winkly TAG=$SHA docker compose --env-file deploy/stack.env -f docker-compose.prod.yml pull chat-server admin
+          if grep -qx 'API_HOST=chatter-drexx-api.duckdns.org' deploy/stack.env; then
+            sed -i 's|^API_HOST=.*|API_HOST=winkly-api.duckdns.org, chatter-drexx-api.duckdns.org|' deploy/stack.env
+          fi
+          if grep -qx 'ADMIN_HOST=chatter-drexx-admin.duckdns.org' deploy/stack.env; then
+            sed -i 's|^ADMIN_HOST=.*|ADMIN_HOST=winkly.duckdns.org, chatter-drexx-admin.duckdns.org|' deploy/stack.env
+          fi
           sed -i "s/^TAG=.*/TAG=$SHA/" deploy/stack.env
           sed -i 's|^IMAGE_PREFIX=.*|IMAGE_PREFIX=ghcr.io/incrementish/winkly|' deploy/stack.env
           sed -i 's|^WEB_ORIGIN=.*|WEB_ORIGIN=https://winkly.pages.dev|' deploy/chat-server.env

@@ -42,7 +42,7 @@ The lobby, About, Terms and Privacy pages share a footer containing only Terms, 
 API health and Admin links appear in the account menu only for signed-in moderators and admins.
 API health opens `/health` on `VITE_CHAT_SERVER_URL`; it is a liveness response, not UptimeRobot history or
 a whole-site availability guarantee. The admin link defaults to `http://localhost:3000/admin` in development and
-`https://chatter-drexx-admin.duckdns.org/admin` in production. Set `VITE_ADMIN_URL` before building to override it.
+`https://winkly.duckdns.org/admin` in production. Set `VITE_ADMIN_URL` before building to override it.
 
 ## Notifications and room removal
 

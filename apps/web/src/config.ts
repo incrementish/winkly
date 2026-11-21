@@ -6,7 +6,7 @@ export const CONTACT_EMAIL: string =
   import.meta.env.VITE_CONTACT_EMAIL ?? "draxxdk@gmail.com";
 
 // The code the site runs on, which anybody can read.
-export const SOURCE_URL = "https://github.com/drexxdk/chatter";
+export const SOURCE_URL = "https://github.com/incrementish/winkly";
 
 export const HEALTH_URL = new URL("/health", CHAT_SERVER_URL).href;
 
@@ -14,4 +14,4 @@ export const ADMIN_URL: string =
   import.meta.env.VITE_ADMIN_URL ??
   (import.meta.env.DEV
     ? "http://localhost:3000/admin"
-    : "https://chatter-drexx-admin.duckdns.org/admin");
+    : "https://winkly.duckdns.org/admin");

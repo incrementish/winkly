@@ -40,13 +40,13 @@ CI remains authoritative: these hooks do not reproduce the Linux/Node 24 environ
 
 Roughly $0 a month, on one small machine:
 
-| Part                                       | Where                                                                                                            |
-| ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
-| Web                                        | Cloudflare Pages, `https://winkly.pages.dev`, built from `main` by Cloudflare itself                             |
-| Chat-server, admin, Postgres, Redis, Caddy | One Oracle Cloud Always Free ARM machine, Docker Compose (`docker-compose.prod.yml`)                             |
-| API and admin addresses                    | DuckDNS names `chatter-drexx-api.duckdns.org` and `chatter-drexx-admin.duckdns.org`; Caddy gets the certificates |
-| Backups                                    | Nightly `pg_dump` to Cloudflare R2 (`chatter-backups`)                                                           |
-| Uptime                                     | UptimeRobot: the web, `/health` on the API, `/admin/login` on the admin                                          |
+| Part                                       | Where                                                                                        |
+| ------------------------------------------ | -------------------------------------------------------------------------------------------- |
+| Web                                        | Cloudflare Pages, `https://winkly.pages.dev`, built from `main` by Cloudflare itself         |
+| Chat-server, admin, Postgres, Redis, Caddy | One Oracle Cloud Always Free ARM machine, Docker Compose (`docker-compose.prod.yml`)         |
+| API and admin addresses                    | DuckDNS names `winkly-api.duckdns.org` and `winkly.duckdns.org`; Caddy gets the certificates |
+| Backups                                    | Nightly `pg_dump` to Cloudflare R2 (`chatter-backups`)                                       |
+| Uptime                                     | UptimeRobot: the web, `/health` on the API, `/admin/login` on the admin                      |
 
 A push to `main` that passes CI is deployed: `.github/workflows/deploy.yml` builds ARM images, pushes them to GHCR and
 restarts the stack over SSH. The settings (`deploy/*.env`, never committed) live on the machine, the secrets in the

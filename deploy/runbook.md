@@ -84,6 +84,10 @@ same form for all, with the chat-server's public address (`PUBLIC_API_URL`, for 
 `https://chatter-drexx-api.duckdns.org`): `<PUBLIC_API_URL>/auth/google/callback`, `/auth/facebook/callback` and
 `/auth/discord/callback`.
 
+The Winkly API also answers at `https://winkly-api.duckdns.org`. Keep the old API hostname and `PUBLIC_API_URL` in
+place until the new callback URLs are registered with every enabled provider, then update `PUBLIC_API_URL` and recreate
+the chat-server. The old admin hostname remains available as an alias during the transition.
+
 1. **Google**: in the Google Cloud console, make a project, set up the OAuth consent screen (external; the app's privacy
    policy is `<web address>/privacy`, and it must be published, not left in testing, for everybody to use it), then
    Credentials > Create OAuth client ID > Web application with the redirect address above. The scopes are `openid`,
