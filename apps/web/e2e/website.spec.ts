@@ -66,7 +66,7 @@ for (const width of [1280, 375, 320]) {
     await page.goBack();
     await expect(page).toHaveURL(/\/about$/);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-      "How Chatter is built",
+      "How Winkly is built",
     );
     await expect(
       page.locator('main div.contents[aria-hidden="true"]'),

@@ -22,7 +22,7 @@ describe("the page about how the site is built", () => {
     renderAt("/about");
 
     expect(
-      screen.getByRole("heading", { level: 1, name: "How Chatter is built" }),
+      screen.getByRole("heading", { level: 1, name: "How Winkly is built" }),
     ).toBeInTheDocument();
     expect(screen.getAllByRole("heading", { level: 2 })[0]).toHaveTextContent(
       "Built with",
@@ -75,7 +75,7 @@ describe("the page about how the site is built", () => {
     }
     expect(screen.queryByText("Emoji Mart")).toBeNull();
     expect(screen.getByText("Development")).toBeInTheDocument();
-    expect(document.title).toBe("How Chatter is built \u2013 Chatter");
+    expect(document.title).toBe("How Winkly is built \u2013 Winkly");
   });
 
   it("keeps technology icons decorative for screen readers", () => {
@@ -135,9 +135,9 @@ describe("the page about how the site is built", () => {
     expect(
       screen.getByRole("heading", {
         level: 1,
-        name: "S\u00e5dan er Chatter bygget",
+        name: "S\u00e5dan er Winkly bygget",
       }),
     ).toBeInTheDocument();
-    expect(document.title).toBe("S\u00e5dan er Chatter bygget \u2013 Chatter");
+    expect(document.title).toBe("S\u00e5dan er Winkly bygget \u2013 Winkly");
   });
 });

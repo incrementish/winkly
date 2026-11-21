@@ -234,7 +234,7 @@ describe("a page of the documents", () => {
     renderAt("/privacy");
 
     const header = within(screen.getByRole("banner"));
-    expect(header.getByRole("link", { name: "Chatter" })).toHaveAttribute(
+    expect(header.getByRole("link", { name: "Winkly" })).toHaveAttribute(
       "href",
       "/",
     );
@@ -255,7 +255,7 @@ describe("a page of the documents", () => {
     const trail = within(
       screen.getByRole("navigation", { name: "You are here" }),
     );
-    expect(trail.getByRole("link", { name: "Chatter" })).toHaveAttribute(
+    expect(trail.getByRole("link", { name: "Winkly" })).toHaveAttribute(
       "href",
       "/",
     );
@@ -269,7 +269,7 @@ describe("a page of the documents", () => {
     renderAt("/privacy");
 
     await vi.waitFor(() =>
-      expect(document.title).toBe("Privacy policy \u2013 Chatter"),
+      expect(document.title).toBe("Privacy policy \u2013 Winkly"),
     );
   });
 

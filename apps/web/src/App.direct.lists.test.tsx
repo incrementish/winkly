@@ -352,13 +352,11 @@ describe("direct messages", () => {
       receive(server, dm());
       receive(server, dm({ text: "are you there?" }));
 
-      expect(document.title).toBe("(2 messages) General \u2013 Chatter");
+      expect(document.title).toBe("(2 messages) General \u2013 Winkly");
 
       await user.click(threads().getByRole("button", { name: /^Bob/ }));
 
-      await waitFor(() =>
-        expect(document.title).toBe("General \u2013 Chatter"),
-      );
+      await waitFor(() => expect(document.title).toBe("General \u2013 Winkly"));
     });
 
     it("makes a conversation stand out, with a count, until it is opened", async () => {

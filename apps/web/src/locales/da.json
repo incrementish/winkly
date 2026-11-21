@@ -1,5 +1,5 @@
 {
-  "app": { "title": "Chatter" },
+  "app": { "title": "Winkly" },
   "typing": {
     "label": "Skriveaktivitet",
     "summary": "{names} {count, plural, one {skriver} other {skriver}}",
@@ -237,8 +237,8 @@
   },
   "about": {
     "link": "Sådan er det bygget",
-    "title": "Sådan er Chatter bygget",
-    "lead": "Chatter er en lille, uafhængig chat. Her kan du se, hvad den kører på, hvor dine data havner, og hvor længe de bliver der, så du selv kan vurdere den.",
+    "title": "Sådan er Winkly bygget",
+    "lead": "Winkly er en lille, uafhængig chat. Her kan du se, hvad den kører på, hvor dine data havner, og hvor længe de bliver der, så du selv kan vurdere den.",
     "partsTitle": "Delene",
     "partsIntro": "Hvad der kører hvor, og hvad hver del er til.",
     "parts": {
@@ -337,8 +337,8 @@
       "reports": "Alle kan anmelde en besked. Når tre forskellige adresser har anmeldt den, skjules den for alle, indtil en moderator har set på den.",
       "bans": "Udelukkelser bruger saltede adresse- eller kontohash. Kontoudelukkelser følger medlemmet på tværs af adresser. Moderatorrettigheder kommer fra personalekonti, ikke fra et valgt visningsnavn.",
       "age": "Du skal være 18 år eller derover. Der er ingen måde at kontrollere en alder på, så det hviler på vilkårene og på moderering.",
-      "passwords": "Du kan bruge brugernavn og adgangskode eller en aktiveret forbindelse til Google, Facebook eller Discord. Chatter gemmer kun egne adgangskoder som hash og modtager aldrig din adgangskode hos en anden loginudbyder. Personalets adgangskoder gemmes også som hash.",
-      "thirdParties": "Chatter har ingen reklamer eller analyseværktøjer. Din browser kontakter Cloudflare Turnstile til menneskeverifikation, når det er aktiveret, GIPHY til GIF-søgninger og medier samt YouTube til videobilleder og afspillere. Udbyderne modtager forbindelsesdata som din IP-adresse efter deres egne privatlivspolitikker. Avatarer tegnes i din browser.",
+      "passwords": "Du kan bruge brugernavn og adgangskode eller en aktiveret forbindelse til Google, Facebook eller Discord. Winkly gemmer kun egne adgangskoder som hash og modtager aldrig din adgangskode hos en anden loginudbyder. Personalets adgangskoder gemmes også som hash.",
+      "thirdParties": "Winkly har ingen reklamer eller analyseværktøjer. Din browser kontakter Cloudflare Turnstile til menneskeverifikation, når det er aktiveret, GIPHY til GIF-søgninger og medier samt YouTube til videobilleder og afspillere. Udbyderne modtager forbindelsesdata som din IP-adresse efter deres egne privatlivspolitikker. Avatarer tegnes i din browser.",
       "headers": "Siden sender strenge sikkerhedshoveder. Dens Content-Security-Policy tillader egne scripts og Cloudflare Turnstile, GIPHY-medier, YouTube-billeder samt rammer fra Turnstile og YouTubes privatlivsforbedrede vært."
     },
     "buildTitle": "Bygning og udrulning",
@@ -355,7 +355,7 @@
     },
     "limitsTitle": "Hvad du kan forvente",
     "limits": {
-      "hobby": "Chatter drives af én person på én lille server. Den er bygget til at være pålidelig, men er ikke en virksomhed: den kan være nede en tid, og der er ikke lovet nogen oppetid.",
+      "hobby": "Winkly drives af én person på én lille server. Den er bygget til at være pålidelig, men er ikke en virksomhed: den kan være nede en tid, og der er ikke lovet nogen oppetid.",
       "public": "Det, du skriver i et rum, ses af alle i det, og moderatorer kan læse det. Del ikke noget, du ikke ville sige offentligt.",
       "law": "Vilkårene og privatlivspolitikken er de bindende tekster; denne side forklarer det samme i almindeligt sprog."
     },
@@ -543,7 +543,7 @@
     "deleteWarning": "Det sletter din konto og frigiver dit kaldenavn. Det, du har skrevet i et rum, bliver stående, indtil det udløber. Det kan ikke fortrydes.",
     "deleteConfirm": "Ja, slet min konto",
     "working": "Logger dig ind…",
-    "back": "Tilbage til Chatter",
+    "back": "Tilbage til Winkly",
     "register": {
       "title": "Opret din konto",
       "intro": "{provider} har bekræftet, hvem du er. Vælg et brugernavn, det navn der vises i chatten, og en avatar.",

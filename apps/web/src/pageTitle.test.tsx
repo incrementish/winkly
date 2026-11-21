@@ -24,11 +24,11 @@ describe("the title of the page", () => {
       initialProps: { page: "Dating" as string | undefined },
     });
 
-    expect(document.title).toBe("Dating \u2013 Chatter");
+    expect(document.title).toBe("Dating \u2013 Winkly");
 
     rerender({ page: undefined });
 
-    expect(document.title).toBe("Chatter");
+    expect(document.title).toBe("Winkly");
   });
 
   it("starts with the number of private messages not seen, in the language of the page, and puts a dot on the icon", async () => {
@@ -39,17 +39,17 @@ describe("the title of the page", () => {
     expect(iconOf()?.getAttribute("href")).toBe("/favicon.svg");
 
     rerender({ unread: 1 });
-    expect(document.title).toBe("(1 message) Dating \u2013 Chatter");
+    expect(document.title).toBe("(1 message) Dating \u2013 Winkly");
     expect(iconOf()?.getAttribute("href")).toBe("/favicon-unread.svg");
 
     rerender({ unread: 2 });
-    expect(document.title).toBe("(2 messages) Dating \u2013 Chatter");
+    expect(document.title).toBe("(2 messages) Dating \u2013 Winkly");
 
     await act(() => i18n.changeLanguage("da"));
-    expect(document.title).toBe("(2 beskeder) Dating \u2013 Chatter");
+    expect(document.title).toBe("(2 beskeder) Dating \u2013 Winkly");
 
     rerender({ unread: 0 });
-    expect(document.title).toBe("Dating \u2013 Chatter");
+    expect(document.title).toBe("Dating \u2013 Winkly");
     expect(iconOf()?.getAttribute("href")).toBe("/favicon.svg");
   });
 
@@ -79,6 +79,6 @@ describe("the title of the page", () => {
 
     rerender({ unread: 0 });
 
-    expect(document.title).toBe("Dating \u2013 Chatter");
+    expect(document.title).toBe("Dating \u2013 Winkly");
   });
 });

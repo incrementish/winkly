@@ -58,7 +58,7 @@ describe("the pages of the site", () => {
       await screen.findByRole("heading", { level: 1, name: "Privacy policy" }),
     ).toBeInTheDocument();
 
-    await user.click(header().getByRole("link", { name: "Chatter" }));
+    await user.click(header().getByRole("link", { name: "Winkly" }));
 
     expect(
       await screen.findByRole("heading", { name: "Public rooms" }),

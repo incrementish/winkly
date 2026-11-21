@@ -314,11 +314,11 @@ describe("lobby", () => {
 
     expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
-      "Chatter",
+      "Winkly",
     );
     expect(background).toHaveAttribute("aria-hidden", "true");
     expect(background).toBeEmptyDOMElement();
-    expect(screen.queryByRole("region", { name: "Chatter" })).toBeNull();
+    expect(screen.queryByRole("region", { name: "Winkly" })).toBeNull();
     expect(screen.getByRole("contentinfo")).toContainElement(
       screen.getByRole("navigation", { name: "Terms and privacy" }),
     );
@@ -1177,14 +1177,14 @@ describe("inside a room", () => {
   it("names the room in the title of the page, and only the site in the lobby", async () => {
     const { user } = await enterRoom();
 
-    await waitFor(() => expect(document.title).toBe("General \u2013 Chatter"));
+    await waitFor(() => expect(document.title).toBe("General \u2013 Winkly"));
 
     await leaveRoom(user);
     await screen.findByRole("heading", { name: "Public rooms" });
-    expect(document.title).toBe("Chatter");
+    expect(document.title).toBe("Winkly");
 
     await user.click(screen.getByRole("button", { name: "Join Music" }));
-    await waitFor(() => expect(document.title).toBe("Music \u2013 Chatter"));
+    await waitFor(() => expect(document.title).toBe("Music \u2013 Winkly"));
   });
 
   it("switches to another room from the room name in the header", async () => {

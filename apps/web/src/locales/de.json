@@ -1,5 +1,5 @@
 {
-  "app": { "title": "Chatter" },
+  "app": { "title": "Winkly" },
   "typing": {
     "label": "Schreibaktivität",
     "summary": "{names} {count, plural, one {schreibt} other {schreiben}}",
@@ -237,8 +237,8 @@
   },
   "about": {
     "link": "So ist es gebaut",
-    "title": "So ist Chatter gebaut",
-    "lead": "Chatter ist ein kleiner, unabhängiger Chat. Diese Seite zeigt, worauf er läuft, wohin deine Daten gehen und wie lange sie dort bleiben, damit du ihn selbst beurteilen kannst.",
+    "title": "So ist Winkly gebaut",
+    "lead": "Winkly ist ein kleiner, unabhängiger Chat. Diese Seite zeigt, worauf er läuft, wohin deine Daten gehen und wie lange sie dort bleiben, damit du ihn selbst beurteilen kannst.",
     "partsTitle": "Die Bausteine",
     "partsIntro": "Was wo läuft und wofür jeder Teil da ist.",
     "parts": {
@@ -337,8 +337,8 @@
       "reports": "Jeder kann eine Nachricht melden. Haben drei verschiedene Adressen sie gemeldet, wird sie für alle ausgeblendet, bis ein Moderator sie angesehen hat.",
       "bans": "Sperren verwenden gesalzene Adress- oder Konto-Hashes. Kontosperren folgen dem Mitglied über verschiedene Adressen. Moderatorrechte stammen aus Personalkonten, nicht aus einem gewählten Anzeigenamen.",
       "age": "Du musst mindestens 18 Jahre alt sein. Ein Alter lässt sich nicht prüfen, das beruht also auf den Bedingungen und auf Moderation.",
-      "passwords": "Du kannst Benutzername und Passwort oder eine aktivierte Verbindung zu Google, Facebook oder Discord verwenden. Chatter speichert eigene Passwörter nur als Hash und erhält nie dein Passwort bei einem anderen Anmeldedienst. Auch Passwörter des Personals werden als Hash gespeichert.",
-      "thirdParties": "Chatter verwendet keine Werbung oder Analysedienste. Dein Browser kontaktiert bei Aktivierung Cloudflare Turnstile zur Prüfung menschlicher Nutzung, GIPHY für GIF-Suchen und Medien sowie YouTube für Videovorschaubilder und Player. Diese Anbieter erhalten Verbindungsdaten wie deine IP-Adresse gemäß ihren eigenen Datenschutzerklärungen. Avatare werden in deinem Browser gezeichnet.",
+      "passwords": "Du kannst Benutzername und Passwort oder eine aktivierte Verbindung zu Google, Facebook oder Discord verwenden. Winkly speichert eigene Passwörter nur als Hash und erhält nie dein Passwort bei einem anderen Anmeldedienst. Auch Passwörter des Personals werden als Hash gespeichert.",
+      "thirdParties": "Winkly verwendet keine Werbung oder Analysedienste. Dein Browser kontaktiert bei Aktivierung Cloudflare Turnstile zur Prüfung menschlicher Nutzung, GIPHY für GIF-Suchen und Medien sowie YouTube für Videovorschaubilder und Player. Diese Anbieter erhalten Verbindungsdaten wie deine IP-Adresse gemäß ihren eigenen Datenschutzerklärungen. Avatare werden in deinem Browser gezeichnet.",
       "headers": "Die Seite sendet strenge Sicherheits-Header. Ihre Content-Security-Policy erlaubt eigene Skripte und Cloudflare Turnstile, GIPHY-Medien, YouTube-Vorschaubilder sowie Frames von Turnstile und YouTubes datenschutzfreundlicher Domain."
     },
     "buildTitle": "Bauen und Ausliefern",
@@ -355,7 +355,7 @@
     },
     "limitsTitle": "Was du erwarten kannst",
     "limits": {
-      "hobby": "Chatter wird von einer Person auf einem kleinen Server betrieben. Er ist auf Zuverlässigkeit gebaut, aber kein Unternehmen: Er kann eine Weile ausfallen, und eine Verfügbarkeit wird nicht versprochen.",
+      "hobby": "Winkly wird von einer Person auf einem kleinen Server betrieben. Er ist auf Zuverlässigkeit gebaut, aber kein Unternehmen: Er kann eine Weile ausfallen, und eine Verfügbarkeit wird nicht versprochen.",
       "public": "Was du in einem Raum schreibst, sehen alle darin, und Moderatoren können es lesen. Teile nichts, was du nicht öffentlich sagen würdest.",
       "law": "Die Nutzungsbedingungen und die Datenschutzerklärung sind die verbindlichen Texte; diese Seite erklärt dasselbe in einfachen Worten."
     },
@@ -543,7 +543,7 @@
     "deleteWarning": "Das löscht dein Konto und gibt deinen Spitznamen frei. Was du in einem Raum geschrieben hast, bleibt dort, bis es abläuft. Das lässt sich nicht rückgängig machen.",
     "deleteConfirm": "Ja, mein Konto löschen",
     "working": "Du wirst angemeldet…",
-    "back": "Zurück zu Chatter",
+    "back": "Zurück zu Winkly",
     "register": {
       "title": "Dein Konto erstellen",
       "intro": "{provider} hat bestätigt, wer du bist. Wähle einen Benutzernamen, den Namen im Chat und einen Avatar.",

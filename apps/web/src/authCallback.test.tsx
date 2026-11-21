@@ -146,7 +146,7 @@ describe("the page the providers send the browser back to", () => {
       );
 
       expect(screen.queryByRole("banner")).toBeNull();
-      expect(screen.queryByRole("link", { name: "Chatter" })).toBeNull();
+      expect(screen.queryByRole("link", { name: "Winkly" })).toBeNull();
       expect(screen.queryByRole("button", { name: "Settings" })).toBeNull();
       if (returnPath === "/rooms/general") {
         expect(document.querySelector(".site-background")).toHaveAttribute(
@@ -218,7 +218,7 @@ describe("the page the providers send the browser back to", () => {
       "You did not allow the sign-in.",
     );
     expect(
-      screen.getByRole("link", { name: "Back to Chatter" }),
+      screen.getByRole("link", { name: "Back to Winkly" }),
     ).toHaveAttribute("href", "/rooms/music");
   });
 
@@ -632,7 +632,7 @@ describe("the page the providers send the browser back to", () => {
 
       const header = within(await screen.findByRole("banner"));
 
-      expect(header.getByRole("link", { name: "Chatter" })).toHaveAttribute(
+      expect(header.getByRole("link", { name: "Winkly" })).toHaveAttribute(
         "href",
         "/",
       );

@@ -1,5 +1,5 @@
 {
-  "app": { "title": "Chatter" },
+  "app": { "title": "Winkly" },
   "typing": {
     "label": "Typing activity",
     "summary": "{names} {count, plural, one {is} other {are}} typing",
@@ -237,8 +237,8 @@
   },
   "about": {
     "link": "How it is built",
-    "title": "How Chatter is built",
-    "lead": "Chatter is a small, independent chat. This page shows what it runs on, where your data goes and how long it stays there, so that you can judge it for yourself.",
+    "title": "How Winkly is built",
+    "lead": "Winkly is a small, independent chat. This page shows what it runs on, where your data goes and how long it stays there, so that you can judge it for yourself.",
     "partsTitle": "The parts",
     "partsIntro": "What runs where, and what each part is for.",
     "parts": {
@@ -337,8 +337,8 @@
       "reports": "Anyone can report a message. When three different addresses have reported it, it is hidden for everybody until a moderator has looked at it.",
       "bans": "Bans use salted address or account hashes. Account bans follow the member across addresses. Moderator permissions come from staff accounts, not from a chosen display name.",
       "age": "You must be 18 or older. There is no way to check an age, so this rests on the terms and on moderation.",
-      "passwords": "You can use a username and password or an enabled Google, Facebook or Discord connection. Chatter stores its own passwords only as hashes and never receives your password at another sign-in provider. Staff passwords are also stored hashed.",
-      "thirdParties": "Chatter runs no advertising or analytics. Your browser contacts Cloudflare Turnstile for human verification when enabled, GIPHY for GIF searches and media, and YouTube for video thumbnails and players. These providers receive connection data such as your IP address under their own privacy policies. Avatars are drawn in your browser.",
+      "passwords": "You can use a username and password or an enabled Google, Facebook or Discord connection. Winkly stores its own passwords only as hashes and never receives your password at another sign-in provider. Staff passwords are also stored hashed.",
+      "thirdParties": "Winkly runs no advertising or analytics. Your browser contacts Cloudflare Turnstile for human verification when enabled, GIPHY for GIF searches and media, and YouTube for video thumbnails and players. These providers receive connection data such as your IP address under their own privacy policies. Avatars are drawn in your browser.",
       "headers": "The site sends strict security headers. Its Content-Security-Policy allows its own scripts and Cloudflare Turnstile, GIPHY media, YouTube thumbnails, and frames from Turnstile and YouTube's privacy-enhanced host."
     },
     "buildTitle": "Building and deploying",
@@ -355,7 +355,7 @@
     },
     "limitsTitle": "What to expect",
     "limits": {
-      "hobby": "Chatter is run by one person on one small server. It is built to be reliable, but it is not a company: it can be down for a while, and no uptime is promised.",
+      "hobby": "Winkly is run by one person on one small server. It is built to be reliable, but it is not a company: it can be down for a while, and no uptime is promised.",
       "public": "What you write in a room is seen by everybody in it, and moderators can read it. Do not share anything you would not say in public.",
       "law": "The terms of use and the privacy policy are the binding texts; this page explains the same things in plain words."
     },
@@ -543,7 +543,7 @@
     "deleteWarning": "This deletes your account and frees your nickname. What you have written in a room stays there until it expires. It cannot be undone.",
     "deleteConfirm": "Yes, delete my account",
     "working": "Signing you in…",
-    "back": "Back to Chatter",
+    "back": "Back to Winkly",
     "register": {
       "title": "Create your account",
       "intro": "{provider} has confirmed who you are. Choose a username, the name shown in the chat, and an avatar.",

@@ -546,7 +546,7 @@ test("empty and short virtual logs stay bottom aligned", async ({
     await guest.setViewportSize({ width, height: 720 });
     await guest.goto("/");
     await expect(
-      guest.getByRole("heading", { name: "Chatter", exact: true }),
+      guest.getByRole("heading", { name: "Winkly", exact: true }),
     ).toBeVisible();
     const results = await guest.evaluate(async () => {
       const paths = [
@@ -654,7 +654,7 @@ test("bounded message log keeps every keyboard destination reachable", async ({
     await guest.setViewportSize(viewport);
     await guest.goto("/");
     await expect(
-      guest.getByRole("heading", { name: "Chatter", exact: true }),
+      guest.getByRole("heading", { name: "Winkly", exact: true }),
     ).toBeVisible();
     const cdp = await guest.context().newCDPSession(guest);
     await cdp.send("Emulation.setCPUThrottlingRate", { rate: cpuThrottle });
@@ -3202,7 +3202,7 @@ test("a guest must explicitly accept the terms on every join and can read them f
     terms.getByRole("heading", { level: 1, name: "Terms of use" }),
   ).toBeVisible();
   // The page keeps the site's header and shows where it is.
-  await expect(terms.getByRole("banner")).toContainText("Chatter");
+  await expect(terms.getByRole("banner")).toContainText("Winkly");
   await expect(
     terms.getByRole("navigation", { name: "You are here" }),
   ).toBeVisible();
