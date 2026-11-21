@@ -52,7 +52,7 @@ jobs:
 
       - name: Name the image
         id: name
-        run: echo "image=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/chatter-${{ matrix.image }}" >> "$GITHUB_OUTPUT"
+        run: echo "image=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/winkly-${{ matrix.image }}" >> "$GITHUB_OUTPUT"
 
       - uses: docker/build-push-action@v7
         with:
@@ -96,26 +96,43 @@ jobs:
           scp -i ~/.ssh/deploy_key docker-compose.prod.yml "$target:/opt/chatter/"
           scp -i ~/.ssh/deploy_key -r deploy/caddy deploy/backup.sh "$target:/opt/chatter/deploy/"
 
-      - name: Log in to GHCR on the production machine
+      - name: Create temporary registry configuration
+        id: registry
+        run: |
+          path=$(ssh -i ~/.ssh/deploy_key "${{ vars.DEPLOY_USER }}@${{ vars.DEPLOY_HOST }}" 'mktemp -d /tmp/winkly-ghcr.XXXXXXXXXX')
+          [[ "$path" =~ ^/tmp/winkly-ghcr\.[a-zA-Z0-9]+$ ]]
+          echo "path=$path" >> "$GITHUB_OUTPUT"
+
+      - name: Authenticate production image pulls
         env:
-          DEPLOY_HOST: ${{ vars.DEPLOY_HOST }}
-          DEPLOY_USER: ${{ vars.DEPLOY_USER }}
           GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GHCR_USERNAME: ${{ github.actor }}
+          REGISTRY_CONFIG: ${{ steps.registry.outputs.path }}
         run: |
-          printf '%s' "$GHCR_TOKEN" | ssh -i ~/.ssh/deploy_key "$DEPLOY_USER@$DEPLOY_HOST" \
-            "docker login ghcr.io --username '$GHCR_USERNAME' --password-stdin"
+          printf '%s' "$GHCR_TOKEN" | ssh -i ~/.ssh/deploy_key "${{ vars.DEPLOY_USER }}@${{ vars.DEPLOY_HOST }}" \
+            "docker --config '$REGISTRY_CONFIG' login ghcr.io --username '$GHCR_USERNAME' --password-stdin"
 
       - name: Pull and restart
         run: |
           ssh -i ~/.ssh/deploy_key "${{ vars.DEPLOY_USER }}@${{ vars.DEPLOY_HOST }}" bash -s <<EOF
           set -euo pipefail
-          trap 'docker logout ghcr.io >/dev/null 2>&1 || true' EXIT
+          export DOCKER_CONFIG='${{ steps.registry.outputs.path }}'
           cd /opt/chatter
+          grep -q '^TAG=' deploy/stack.env
+          grep -q '^IMAGE_PREFIX=' deploy/stack.env
+          grep -q '^WEB_ORIGIN=' deploy/chat-server.env
+          IMAGE_PREFIX=ghcr.io/incrementish/winkly TAG=$SHA docker compose --env-file deploy/stack.env -f docker-compose.prod.yml pull chat-server admin
           sed -i "s/^TAG=.*/TAG=$SHA/" deploy/stack.env
-          sed -i 's|^IMAGE_PREFIX=.*|IMAGE_PREFIX=ghcr.io/incrementish/chatter|' deploy/stack.env
+          sed -i 's|^IMAGE_PREFIX=.*|IMAGE_PREFIX=ghcr.io/incrementish/winkly|' deploy/stack.env
           sed -i 's|^WEB_ORIGIN=.*|WEB_ORIGIN=https://winkly.pages.dev|' deploy/chat-server.env
-          docker compose --env-file deploy/stack.env -f docker-compose.prod.yml pull chat-server admin
           docker compose --env-file deploy/stack.env -f docker-compose.prod.yml up -d --remove-orphans
-          docker image prune -f
+          docker compose --env-file deploy/stack.env -f docker-compose.prod.yml up -d --force-recreate --no-deps chat-server
           EOF
+
+      - name: Remove temporary registry configuration
+        if: always() && steps.registry.outputs.path != ''
+        env:
+          REGISTRY_CONFIG: ${{ steps.registry.outputs.path }}
+        run: |
+          ssh -i ~/.ssh/deploy_key "${{ vars.DEPLOY_USER }}@${{ vars.DEPLOY_HOST }}" \
+            "rm -f -- '$REGISTRY_CONFIG/config.json' && rmdir -- '$REGISTRY_CONFIG'"

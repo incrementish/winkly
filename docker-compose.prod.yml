@@ -34,7 +34,7 @@ services:
         max-file: "5"
 
   chat-server:
-    image: ${IMAGE_PREFIX:-chatter}-chat-server:${TAG:-latest}
+    image: ${IMAGE_PREFIX:-winkly}-chat-server:${TAG:-latest}
     build:
       context: .
       dockerfile: apps/chat-server/Dockerfile
@@ -50,7 +50,7 @@ services:
     logging: *logging
 
   admin:
-    image: ${IMAGE_PREFIX:-chatter}-admin:${TAG:-latest}
+    image: ${IMAGE_PREFIX:-winkly}-admin:${TAG:-latest}
     build:
       context: .
       dockerfile: apps/admin/Dockerfile
@@ -67,7 +67,7 @@ services:
   #   docker compose --env-file deploy/stack.env -f docker-compose.prod.yml run --rm admin-tools
   admin-tools:
     profiles: [tools]
-    image: ${IMAGE_PREFIX:-chatter}-admin-tools:${TAG:-latest}
+    image: ${IMAGE_PREFIX:-winkly}-admin-tools:${TAG:-latest}
     build:
       context: .
       dockerfile: apps/admin/Dockerfile

@@ -1,4 +1,4 @@
-# Chatter
+# Winkly
 
 A real-time chat for guests and members: public rooms, private messages, password and provider accounts, moderators and bans. A monorepo with three apps:
 
@@ -42,7 +42,7 @@ Roughly $0 a month, on one small machine:
 
 | Part                                       | Where                                                                                                            |
 | ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
-| Web                                        | Cloudflare Pages, `https://chatter-drexx.pages.dev`, built from `main` by Cloudflare itself                      |
+| Web                                        | Cloudflare Pages, `https://winkly.pages.dev`, built from `main` by Cloudflare itself                             |
 | Chat-server, admin, Postgres, Redis, Caddy | One Oracle Cloud Always Free ARM machine, Docker Compose (`docker-compose.prod.yml`)                             |
 | API and admin addresses                    | DuckDNS names `chatter-drexx-api.duckdns.org` and `chatter-drexx-admin.duckdns.org`; Caddy gets the certificates |
 | Backups                                    | Nightly `pg_dump` to Cloudflare R2 (`chatter-backups`)                                                           |
