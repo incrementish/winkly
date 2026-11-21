@@ -96,12 +96,24 @@ jobs:
           scp -i ~/.ssh/deploy_key docker-compose.prod.yml "$target:/opt/chatter/"
           scp -i ~/.ssh/deploy_key -r deploy/caddy deploy/backup.sh "$target:/opt/chatter/deploy/"
 
+      - name: Log in to GHCR on the production machine
+        env:
+          DEPLOY_HOST: ${{ vars.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ vars.DEPLOY_USER }}
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GHCR_USERNAME: ${{ github.actor }}
+        run: |
+          printf '%s' "$GHCR_TOKEN" | ssh -i ~/.ssh/deploy_key "$DEPLOY_USER@$DEPLOY_HOST" \
+            "docker login ghcr.io --username '$GHCR_USERNAME' --password-stdin"
+
       - name: Pull and restart
         run: |
           ssh -i ~/.ssh/deploy_key "${{ vars.DEPLOY_USER }}@${{ vars.DEPLOY_HOST }}" bash -s <<EOF
           set -euo pipefail
+          trap 'docker logout ghcr.io >/dev/null 2>&1 || true' EXIT
           cd /opt/chatter
           sed -i "s/^TAG=.*/TAG=$SHA/" deploy/stack.env
+          sed -i 's|^IMAGE_PREFIX=.*|IMAGE_PREFIX=ghcr.io/incrementish/chatter|' deploy/stack.env
           sed -i 's|^WEB_ORIGIN=.*|WEB_ORIGIN=https://winkly.pages.dev|' deploy/chat-server.env
           docker compose --env-file deploy/stack.env -f docker-compose.prod.yml pull chat-server admin
           docker compose --env-file deploy/stack.env -f docker-compose.prod.yml up -d --remove-orphans
