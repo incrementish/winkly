@@ -91,10 +91,13 @@ function trackPollingConnection(page: Page) {
   page.on("request", (request) => {
     const requestUrl = new URL(request.url());
     if (
-      request.method() === "GET" &&
+      request.method() === "POST" &&
       requestUrl.pathname === "/socket.io/" &&
       requestUrl.searchParams.get("transport") === "polling" &&
-      requestUrl.searchParams.has("sid")
+      requestUrl.searchParams.has("sid") &&
+      (request.postData() ?? "")
+        .split(String.fromCharCode(30))
+        .some((packet) => packet === "40" || packet.startsWith("40{"))
     )
       url = request.url();
   });

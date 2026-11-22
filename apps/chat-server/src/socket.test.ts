@@ -3439,6 +3439,7 @@ describe("moderator access", () => {
       const { io, port } = await startServer({ authTokenSecret: SECRET });
       const lobby = connectClient(`http://localhost:${port}/lobby`, {
         autoConnect: false,
+        forceNew: true,
         reconnection: false,
         transports: ["polling"],
       });
