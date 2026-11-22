@@ -2748,12 +2748,8 @@ for (const interruption of ["suspended", "offline"] as const) {
     await enterRoom(alice, LOUNGE.name, "Alice");
     await enterRoom(bob, LOUNGE.name, "Bob");
     const missed = `While mobile was ${interruption} ${Date.now()}`;
-    await alice.clock.install();
-    await disconnect();
     if (interruption === "offline") {
       await alice.bringToFront();
-      await alice.context().setOffline(true);
-      expect(await alice.evaluate(() => navigator.onLine)).toBe(false);
       expect(await alice.evaluate(() => document.visibilityState)).toBe(
         "visible",
       );
@@ -2766,9 +2762,15 @@ for (const interruption of ["suspended", "offline"] as const) {
         document.dispatchEvent(new Event("visibilitychange"));
       });
     }
+    await disconnect();
+    if (interruption === "offline") {
+      await alice.context().setOffline(true);
+      expect(await alice.evaluate(() => navigator.onLine)).toBe(false);
+    }
     await expect(alice.getByRole("status")).toHaveText(
       "Connection lost. Reconnecting…",
     );
+    await alice.clock.install();
     await expect(
       bob.getByRole("heading", { name: "In this room (1 of 5)" }),
     ).toBeVisible();
