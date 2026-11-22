@@ -11,6 +11,7 @@ The end-user chat client: public rooms, private messages, guest entry, member/st
 ## How it works
 
 - `src/chat/useChat.ts` owns the Socket.IO connection and turns the chat-server protocol (documented in `apps/chat-server/README.md`) into React state: session, current room, members, messages and error code. What does not need the hook's state is next to it: `types.ts` (the shapes), `messages.ts` (reading what the server sends, merging history, redaction) and `reconnect.ts` (delays and which errors are final).
+- Lobby and chat use Socket.IO HTTP long-polling without WebSocket upgrades, because Brave Shields blocks WebSocket connections to the current DuckDNS API hostname. The server still supports WebSocket, and a future transport upgrade can change the client configuration.
 - Guests are anonymous: a nickname is the only input. Nickname rules are mirrored in `src/nickname.ts` for instant feedback; the server stays authoritative.
 - Messages are rendered as plain text, never HTML.
 - **Room search:** the header textbox searches loaded room messages and the guest's private messages shown in the room timeline by text or sender. Results appear only for a nonempty query; image attachment URLs are excluded from matching and previews. Result previews follow the chat: the guest's messages sit on the right, private messages use yellow with a dashed border, and moderators keep their green styling. Ctrl+F / Cmd+F focuses the field; arrows and Enter select a result and reveal the original message. Escape or clicking outside closes the results. Hidden or banned content is excluded. Search resets when changing rooms and uses retained client history, not an archive of older messages.
@@ -106,7 +107,7 @@ CI distributes the complete suite across two runners, keeping the two-worker lim
 
 ### End-to-end
 
-`npm run test:web:e2e` (Playwright) drives a real browser against the real chat-server. It covers two guests chatting (including HTML shown as text), a guest whose WebSocket is cut being reconnected to the same room, a full room turning a guest away, and a ban blocking the connection until it is lifted.
+`npm run test:web:e2e` (Playwright) drives a real browser against the real chat-server. It covers two guests chatting (including HTML shown as text), a guest whose connection drops being reconnected to the same room, a full room turning a guest away, and a ban blocking the connection until it is lifted.
 
 - Requires `apps/admin` running on http://localhost:3000 with its database seeded, plus Postgres and Redis (`docker compose up -d`). Everything else is started by the tests.
 - It runs its own chat-server (port 4100) and web client (port 5174), so a dev session can stay open. The e2e chat-server uses Redis database 1, its own Socket.IO channel (`SOCKET_ADAPTER_KEY`), its own ban salt and a 500ms cache sync.

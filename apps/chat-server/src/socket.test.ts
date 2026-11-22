@@ -3435,6 +3435,41 @@ describe("moderator access", () => {
       expect(alice.connected).toBe(true);
     });
 
+    it("closes a polling connection even if another namespace keeps it open", async () => {
+      const { io, port } = await startServer({ authTokenSecret: SECRET });
+      const lobby = connectClient(`http://localhost:${port}/lobby`, {
+        autoConnect: false,
+        forceNew: true,
+        reconnection: false,
+        transports: ["polling"],
+      });
+      const moderator = lobby.io.socket("/", { auth: authFor(7) });
+      clients.push(lobby, moderator);
+      const connected = Promise.all(
+        [lobby, moderator].map(
+          (socket) =>
+            new Promise<void>((resolve, reject) => {
+              socket.once("connect", resolve);
+              socket.once("connect_error", reject);
+              socket.connect();
+            }),
+        ),
+      );
+      await connected;
+      const moderatorGone = new Promise((resolve) =>
+        moderator.once("disconnect", resolve),
+      );
+      const lobbyGone = new Promise((resolve) =>
+        lobby.once("disconnect", resolve),
+      );
+
+      await enforceModerators(io, []);
+      await moderatorGone;
+      expect(lobby.connected).toBe(true);
+      await lobbyGone;
+      expect(lobby.connected).toBe(false);
+    });
+
     it("removes every moderator, but no guest, when nobody may moderate", async () => {
       const { io, ada, grace, alice, aliceKicks } = await connectAll();
       const gone = Promise.all(

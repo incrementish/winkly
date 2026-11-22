@@ -1,6 +1,6 @@
 import crypto from "crypto";
 import type { Server as HttpServer } from "http";
-import { Server } from "socket.io";
+import { Server, type Socket } from "socket.io";
 import { createAdapter } from "@socket.io/redis-adapter";
 import {
   PROFILE_UPDATE_EVENT,
@@ -99,6 +99,20 @@ const REACTION_WINDOW_MS = 5_000;
 // A report can hide somebody's message, so one connection cannot file many of them.
 const REPORTS_PER_WINDOW = 5;
 const REPORT_WINDOW_MS = 60_000;
+
+function disconnectSocket(socket: Socket): void {
+  if (socket.conn.transport.name !== "polling") {
+    socket.disconnect(true);
+    return;
+  }
+
+  // Let a polling client close its own transport before forcibly closing an unresponsive connection.
+  const connection = socket.conn;
+  socket.disconnect();
+  const timeout = setTimeout(() => connection.close(true), 1_000);
+  timeout.unref();
+  connection.once("close", () => clearTimeout(timeout));
+}
 
 interface SocketData {
   guestId: string;
@@ -802,7 +816,9 @@ export function createSocketServer(
         for (const old of await io.fetchSockets()) {
           if ((old.data as SocketData).guestId === takenOver) {
             old.emit("kicked", { reason: "replaced" });
-            old.disconnect(true);
+            const local = io.sockets.sockets.get(old.id);
+            if (local) disconnectSocket(local);
+            else old.disconnect(true);
           }
         }
 
@@ -868,7 +884,7 @@ export function createSocketServer(
       .then(() => emitDirectPresence(data.guestId))
       .catch((error) => {
         log.error("Failed to register direct message delivery", error);
-        socket.disconnect(true);
+        disconnectSocket(socket);
       });
     let watchedDirectIds: string[] = [];
     let directWatchVersion = 0;
@@ -898,7 +914,7 @@ export function createSocketServer(
         (previous.data as SocketData).guestId === data.guestId
       ) {
         previous.emit("kicked", { reason: "replaced" });
-        previous.disconnect(true);
+        disconnectSocket(previous);
       }
     }
 
@@ -2301,7 +2317,9 @@ export async function removeAccountConnections(
     if ((socket.data as SocketData).memberId !== memberId) continue;
 
     socket.emit("kicked", { reason: "invalid_token" });
-    socket.disconnect(true);
+    const local = io.sockets.sockets.get(socket.id);
+    if (local) disconnectSocket(local);
+    else socket.disconnect(true);
   }
 }
 
@@ -2317,7 +2335,7 @@ export async function enforceMembers(
     if (memberId === undefined || allowed.has(memberId)) continue;
 
     socket.emit("kicked", { reason: "invalid_token" });
-    socket.disconnect(true);
+    disconnectSocket(socket);
   }
 }
 
@@ -2335,7 +2353,7 @@ export async function enforceModerators(
     if (accountId === undefined || allowed.has(accountId)) continue;
 
     socket.emit("kicked", { reason: "invalid_token" });
-    socket.disconnect(true);
+    disconnectSocket(socket);
   }
 }
 
@@ -2372,7 +2390,7 @@ export async function enforceBans(
       guestIds: [data.guestId],
     });
     socket.emit("kicked", { reason: "banned" });
-    socket.disconnect(true);
+    disconnectSocket(socket);
   }
 
   for (const room of await getCachedPublicRooms()) {
