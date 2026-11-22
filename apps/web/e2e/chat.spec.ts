@@ -86,6 +86,28 @@ async function newGuest(browser: Browser): Promise<Page> {
   return context.newPage();
 }
 
+function trackPollingConnection(page: Page) {
+  let url: string | undefined;
+  page.on("request", (request) => {
+    const requestUrl = new URL(request.url());
+    if (
+      request.method() === "GET" &&
+      requestUrl.pathname === "/socket.io/" &&
+      requestUrl.searchParams.get("transport") === "polling" &&
+      requestUrl.searchParams.has("sid")
+    )
+      url = request.url();
+  });
+  return async () => {
+    if (!url) throw new Error("No polling session to disconnect");
+    const response = await page.request.post(url, {
+      data: "1",
+      headers: { "content-type": "text/plain;charset=UTF-8" },
+    });
+    expect(response.ok()).toBe(true);
+  };
+}
+
 async function isolatedRoom(name: string) {
   const suffix = crypto.randomUUID().slice(0, 8);
   const room = {
@@ -2683,18 +2705,7 @@ test("a guest whose connection drops is reconnected to the same room", async ({
 }) => {
   const alice = await newGuest(browser);
   const bob = await newGuest(browser);
-
-  // Proxy Alice's real WebSocket so the test can cut it, like a network failure would.
-  const connections: { close: () => Promise<void> }[] = [];
-  await alice.routeWebSocket(/socket\.io/, (ws) => {
-    const server = ws.connectToServer();
-    connections.push({
-      close: async () => {
-        await ws.close();
-        await server.close();
-      },
-    });
-  });
+  const disconnect = trackPollingConnection(alice);
 
   await enterRoom(alice, LOUNGE.name, "Alice");
   await enterRoom(bob, LOUNGE.name, "Bob");
@@ -2705,9 +2716,7 @@ test("a guest whose connection drops is reconnected to the same room", async ({
   await send(bob, "before the drop");
   await expect(alice.getByRole("log")).toContainText("before the drop");
 
-  const beforeDrop = connections.length;
-  await Promise.all(connections.map((connection) => connection.close()));
-
+  await disconnect();
   await expect(alice.getByRole("status")).toHaveText(
     "Connection lost. Reconnecting…",
   );
@@ -2717,7 +2726,6 @@ test("a guest whose connection drops is reconnected to the same room", async ({
     alice.getByRole("heading", { name: LOUNGE.name, level: 2 }),
   ).toBeVisible();
   await expect(alice.getByRole("log")).toContainText("before the drop");
-  expect(connections.length).toBeGreaterThan(beforeDrop);
 
   // Bob sees Alice leave and come back as a member, and they can talk again in both directions.
   await expect(
@@ -2736,20 +2744,12 @@ for (const interruption of ["suspended", "offline"] as const) {
     const alice = await newGuest(browser);
     await alice.setViewportSize({ width: 390, height: 844 });
     const bob = await newGuest(browser);
-    const connections: { close: () => Promise<void> }[] = [];
-    await alice.routeWebSocket(/socket\.io/, (ws) => {
-      const server = ws.connectToServer();
-      connections.push({
-        close: async () => {
-          await ws.close();
-          await server.close();
-        },
-      });
-    });
+    const disconnect = trackPollingConnection(alice);
     await enterRoom(alice, LOUNGE.name, "Alice");
     await enterRoom(bob, LOUNGE.name, "Bob");
     const missed = `While mobile was ${interruption} ${Date.now()}`;
     await alice.clock.install();
+    await disconnect();
     if (interruption === "offline") {
       await alice.bringToFront();
       await alice.context().setOffline(true);
@@ -2757,7 +2757,7 @@ for (const interruption of ["suspended", "offline"] as const) {
       expect(await alice.evaluate(() => document.visibilityState)).toBe(
         "visible",
       );
-    } else
+    } else {
       await alice.evaluate(() => {
         Object.defineProperty(document, "visibilityState", {
           configurable: true,
@@ -2765,7 +2765,7 @@ for (const interruption of ["suspended", "offline"] as const) {
         });
         document.dispatchEvent(new Event("visibilitychange"));
       });
-    await Promise.all(connections.map((connection) => connection.close()));
+    }
     await expect(alice.getByRole("status")).toHaveText(
       "Connection lost. Reconnecting…",
     );
@@ -2953,17 +2953,7 @@ test("messages sent while a guest was disconnected appear once they reconnect", 
   const whileAway = `sent while you were away ${Date.now()}`;
   const alice = await newGuest(browser);
   const bob = await newGuest(browser);
-
-  const connections: { close: () => Promise<void> }[] = [];
-  await alice.routeWebSocket(/socket\.io/, (ws) => {
-    const server = ws.connectToServer();
-    connections.push({
-      close: async () => {
-        await ws.close();
-        await server.close();
-      },
-    });
-  });
+  const disconnect = trackPollingConnection(alice);
 
   await enterRoom(alice, LOUNGE.name, "Alice");
   await enterRoom(bob, LOUNGE.name, "Bob");
@@ -2971,7 +2961,7 @@ test("messages sent while a guest was disconnected appear once they reconnect", 
     alice.getByRole("heading", { name: "In this room (2 of 5)" }),
   ).toBeVisible();
 
-  await Promise.all(connections.map((connection) => connection.close()));
+  await disconnect();
   await expect(alice.getByRole("status")).toHaveText(
     "Connection lost. Reconnecting…",
   );

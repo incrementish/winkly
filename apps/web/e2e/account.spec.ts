@@ -571,12 +571,18 @@ test(
     }
     const birthDate = `${new Date().getUTCFullYear() - 35}-01-01`;
     const presenceFrames: string[] = [];
-    page.on("websocket", (socket) =>
-      socket.on("framereceived", ({ payload }) => {
-        if (typeof payload === "string" && payload.includes('"room:presence"'))
-          presenceFrames.push(payload);
-      }),
-    );
+    page.on("requestfinished", async (request) => {
+      if (
+        request.method() !== "GET" ||
+        !request.url().includes("/socket.io/") ||
+        !request.url().includes("transport=polling")
+      )
+        return;
+      const response = await request.response();
+      if (!response) throw new Error("Missing polling response");
+      const payload = await response.text();
+      if (payload.includes('"room:presence"')) presenceFrames.push(payload);
+    });
     const errors: string[] = [];
     page.on("pageerror", (error) => errors.push(error.message));
     page.on("console", (message) => {

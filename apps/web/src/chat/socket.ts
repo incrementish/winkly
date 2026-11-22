@@ -19,7 +19,7 @@ export type CreateLobbySocket = () => ChatSocket;
 export const createLobbySocket: CreateLobbySocket = () =>
   io(`${CHAT_SERVER_URL}/lobby`, {
     forceNew: true,
-    transports: ["websocket"],
+    transports: ["polling"],
   });
 
 // What lets a new connection be the same guest as an old one: the old guest id and the secret the server gave it.
@@ -68,5 +68,5 @@ export const createSocket: CreateSocket = (
         : {}),
     },
     reconnection: false,
-    transports: ["websocket"],
+    transports: ["polling"],
   });
